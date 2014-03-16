@@ -8,9 +8,12 @@ References:
 --------
 [android-gif-drawable][1]
 
+TODO:
+--------
+share to weibo
 
-TODO:share to weibo
-
+Screenshots:
+--------
 ![image](https://raw.github.com/xuyangbill/Gifbin/master/screenshots/1.png)
 
 [1]: https://github.com/koral--/android-gif-drawable
