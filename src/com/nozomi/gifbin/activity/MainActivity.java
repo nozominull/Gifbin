@@ -1,6 +1,7 @@
 package com.nozomi.gifbin.activity;
 
 import org.apache.http.Header;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ import pl.droidsonroids.gif.GifImageView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import com.nozomi.gifbin.R;
 import com.nozomi.gifbin.util.CommUtil;
 import com.nozomi.gifbin.util.FileUtil;
@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.app.Activity;
 
 public class MainActivity extends Activity {
@@ -65,7 +66,7 @@ public class MainActivity extends Activity {
 		}
 
 		imageView.setKeepScreenOn(true);
-		Button nextView = (Button) findViewById(R.id.next);
+		ImageButton nextView = (ImageButton) findViewById(R.id.next);
 		nextView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -85,7 +86,7 @@ public class MainActivity extends Activity {
 				loadDataFromServer();
 			}
 		});
-		Button previousView = (Button) findViewById(R.id.previous);
+		ImageButton previousView = (ImageButton) findViewById(R.id.previous);
 		previousView.setOnClickListener(new OnClickListener() {
 
 			@Override
