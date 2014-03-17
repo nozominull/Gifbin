@@ -18,7 +18,6 @@ import com.nozomi.gifbin.util.FileUtil;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.app.Activity;
 
