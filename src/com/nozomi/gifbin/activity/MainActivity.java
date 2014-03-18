@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
 		if (isLoading) {
 			return;
 		}
-		CommUtil.makeToast(MainActivity.this, "正在读取图片网址");
+		//CommUtil.makeToast(MainActivity.this, "正在读取图片网址");
 		isLoading = true;
 		asyncHttpClient.get("http://m.gifbin.com/random",
 				new TextHttpResponseHandler() {
