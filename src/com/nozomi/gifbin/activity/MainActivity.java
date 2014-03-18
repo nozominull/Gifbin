@@ -11,15 +11,28 @@ import pl.droidsonroids.gif.GifImageView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.TextHttpResponseHandler;
+
 import com.nozomi.gifbin.R;
 import com.nozomi.gifbin.util.CommUtil;
 import com.nozomi.gifbin.util.FileUtil;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.RequestType;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.UMSsoHandler;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.update.UmengUpdateAgent;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.app.Activity;
+import android.content.Intent;
 
 public class MainActivity extends Activity {
 	private File homeDirectory = null;
@@ -29,11 +42,20 @@ public class MainActivity extends Activity {
 	private int index = -1;// TODO 显示出来才修改
 	private boolean isCancel = false;// TODO 只处理显示
 	private boolean isLoading = false;
+	private UMSocialService mController = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
+
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
+		UmengUpdateAgent.update(this);
+
+		mController = UMServiceFactory.getUMSocialService("com.umeng.share",
+				RequestType.SOCIAL);
+		mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
 		homeDirectory = FileUtil.getHomeDirectory(this);
 		asyncHttpClient = new AsyncHttpClient();
 
@@ -106,13 +128,43 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		ImageButton shareView = (ImageButton) findViewById(R.id.share);
+		shareView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (index >= 0) {
+					mController.setShareContent("#GIF看片#");
+					File file = fileArray.get(index);
+					if (file.exists()) {
+						UMImage uMImage = new UMImage(MainActivity.this, file);
+						mController.setShareImage(uMImage);
+						mController.postShare(MainActivity.this,
+								SHARE_MEDIA.SINA, new SnsPostListener() {
+									@Override
+									public void onStart() {
+
+									}
+
+									@Override
+									public void onComplete(
+											SHARE_MEDIA platform, int eCode,
+											SocializeEntity entity) {
+
+									}
+								});
+					}
+				}
+			}
+
+		});
 	}
 
 	private void loadDataFromServer() {
 		if (isLoading) {
 			return;
 		}
-		//CommUtil.makeToast(MainActivity.this, "正在读取图片网址");
+		// CommUtil.makeToast(MainActivity.this, "正在读取图片网址");
 		isLoading = true;
 		asyncHttpClient.get("http://m.gifbin.com/random",
 				new TextHttpResponseHandler() {
@@ -183,6 +235,29 @@ public class MainActivity extends Activity {
 
 		});
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		/** 使用SSO授权必须添加如下代码 */
+		UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(
+				requestCode);
+		if (ssoHandler != null) {
+			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+		}
 	}
 
 }

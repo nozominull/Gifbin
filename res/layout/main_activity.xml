@@ -29,6 +29,16 @@
         android:layout_marginLeft="@dimen/margin_medium"
         android:background="@drawable/main_previous"
         android:contentDescription="@string/app_name" />
+    
+    <ImageButton
+        android:id="@+id/share"
+        android:layout_width="@dimen/button_medium"
+        android:layout_height="@dimen/button_medium"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/main_share"
+        android:contentDescription="@string/app_name" />
 
     <ImageButton
         android:id="@+id/next"
