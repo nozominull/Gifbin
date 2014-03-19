@@ -58,7 +58,6 @@ public class MainActivity extends Activity {
 
 		homeDirectory = FileUtil.getHomeDirectory(this);
 		asyncHttpClient = new AsyncHttpClient();
-
 		for (File file : homeDirectory.listFiles()) {
 			if (file.isFile()
 					&& (file.getName().endsWith(".gif") || file.getName()
@@ -164,7 +163,7 @@ public class MainActivity extends Activity {
 		if (isLoading) {
 			return;
 		}
-		// CommUtil.makeToast(MainActivity.this, "正在读取图片网址");
+		CommUtil.makeToast(MainActivity.this, "正在读取图片");
 		isLoading = true;
 		asyncHttpClient.get("http://m.gifbin.com/random",
 				new TextHttpResponseHandler() {
@@ -232,9 +231,7 @@ public class MainActivity extends Activity {
 									/ totalSize));
 				}
 			}
-
 		});
-
 	}
 
 	@Override
