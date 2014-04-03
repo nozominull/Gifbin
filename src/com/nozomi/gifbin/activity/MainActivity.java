@@ -4,6 +4,8 @@ import org.apache.http.Header;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
@@ -11,7 +13,6 @@ import pl.droidsonroids.gif.GifImageView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import com.nozomi.gifbin.R;
 import com.nozomi.gifbin.util.CommUtil;
 import com.nozomi.gifbin.util.FileUtil;
@@ -65,6 +66,7 @@ public class MainActivity extends Activity {
 				fileArray.add(file);
 			}
 		}
+		Collections.sort(fileArray);
 
 		initView();
 		if (index == -1) {
